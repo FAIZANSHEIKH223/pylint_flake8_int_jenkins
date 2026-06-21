@@ -7,7 +7,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 git branch: 'main',
-                url: 'https://github.com/USERNAME/python-demo-app.git'
+                url: 'https://github.com/FAIZANSHEIKH223/pylint_flake8_int_jenkins.git'
             }
         }
 
