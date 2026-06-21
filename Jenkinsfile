@@ -57,7 +57,9 @@ pipeline {
         }
 
     }
+
     post {
+
         always {
             recordIssues(
                 tools: [
@@ -66,9 +68,6 @@ pipeline {
                 ]
             )
         }
-    }
-
-    post {
 
         success {
             echo 'Build Successful'
