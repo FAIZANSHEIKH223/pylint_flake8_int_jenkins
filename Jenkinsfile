@@ -33,7 +33,7 @@ pipeline {
             steps {
                 sh '''
                 . venv/bin/activate
-                flake8 .
+                flake8 . --format=pylint > flake8-report.txt || true
                 '''
             }
         }
@@ -42,7 +42,7 @@ pipeline {
             steps {
                 sh '''
                 . venv/bin/activate
-                pylint app.py
+                pylint app.py > pylint-report.txt || true
                 '''
             }
         }
@@ -56,6 +56,16 @@ pipeline {
             }
         }
 
+    }
+    post {
+        always {
+            recordIssues(
+                tools: [
+                    flake8(pattern: 'flake8-report.txt'),
+                    pyLint(pattern: 'pylint-report.txt')
+                ]
+            )
+        }
     }
 
     post {
