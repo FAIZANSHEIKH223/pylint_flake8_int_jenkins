@@ -33,7 +33,7 @@ pipeline {
             steps {
                 sh '''
                 . venv/bin/activate
-                flake8 . --format=pylint > flake8-report.txt || true
+                flake8 . --format=html --htmldir=flake8-report || true
                 '''
             }
         }
@@ -56,17 +56,26 @@ pipeline {
             }
         }
 
-    }
+        stage('Pylint HTML Report') {
+            steps {
+            sh '''
+            . venv/bin/activate
 
+                pylint app.py --output-format=json > pylint.json || true
+
+                pylint-json2html \
+                    -f json \
+                    -o pylint-report.html \
+                    pylint.json
+                '''
+            }
+
+        }
+    }
     post {
 
         always {
-            recordIssues(
-                tools: [
-                    flake8(pattern: 'flake8-report.txt'),
-                    pyLint(pattern: 'pylint-report.txt')
-                ]
-            )
+            publishHTML([ allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: '.', reportFiles: 'pylint-report.html', reportName: 'Pylint HTML Report' ])
         }
 
         success {

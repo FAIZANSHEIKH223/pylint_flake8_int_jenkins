@@ -1,3 +1,5 @@
 pytest
 pylint
 flake8
+pylint-json2html
+flake8-html
