@@ -1,4 +1,0 @@
-flake8
-pylint
-flake8-html
-pylint-json2html
